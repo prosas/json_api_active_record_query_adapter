@@ -1,19 +1,26 @@
 # Biblioteca nativa do Ruby para lidar com parsing e formatação de datas e horas, como Time.parse
-# TODO: Resolver para o caso de ordenação por colunas de tabelas associadas
 
 # Adpta objeto json para hash de consulta compativél com o active_record
 ## Como usar
-# Inclua o module include JsonApiFilterAdapter na controller.
-# chame o método parse_filter_adapter(params)
+# Inclua o module include JsonApiFilterAdapterV2 na controller.
+# chame o método parse_filter_adapter_v2(params)
 # ```
 # class Controller < ApplicationControllers
 #  Model.where(parse_filter_adapter(params))
-#	 ...
+#  ...
 # end
 # ```
-# TODO: Extrair para uma gem
-# TODO: Resolver para o caso de ordenação por colunas de tabelas associadas
 module JsonApiFilterAdapter
+  require 'rest_api_query_adapter'
+  #Module temporário para transição entre versões
+  module V2
+    class << self
+      attr_accessor :time_zone
+    end
+    include RestApiQueryAdapter
+  end
+
+
   class << self
     attr_accessor :time_zone
   end
@@ -138,5 +145,7 @@ module JsonApiFilterAdapter
     # montar array de busca , primeira posição string query , segunda posição ate N serão parametros
     data_converted_value.unshift(data_converted_header)
     data_converted_value
+
+
   end
 end

@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "json_api_active_record_query_adapter"
-  s.version     = "1.2.7"
+  s.version     = "2.0.0"
   s.date        = "2023-04-19"
   s.summary     = "Syntax query definition and adapter for using with active record."
   s.description = "Syntax query definition and adapter for using with active record."

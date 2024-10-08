@@ -26,9 +26,32 @@ include JsonApiFilterAdapter
 
 3. **Example to use the method that will process the data in the controller:**
 
+## Query format
+Filter is a JSON object with the following structure:
+```json
+"<CONECTOR>": [
+  {"attribute": "<TABLE>.<COLUMN> | <COLUMN>", "operator":"<OPERATOR>", "values": ["<SOME_VALUES>"]}
+]
 ```
+`<CONECTOR>` can be _and_ or _or_ boolean logical operators. The filter should always start with a logical operator that determines how the array of conditions will be connected. Each condition is an object with the following properties:
+  - attribute: A string that corresponds to a column of the database table.
+  - operator: An operator.
+  - values: Array of values.
+
+Ex:
+```json
+{
+  "and": [
+    {"attribute": "row.colum1", "operator":"=", "values": [20]},
+    {"attribute": "row.colum2", "operator":"in", "values": ["=null=","teste"]}
+  ]
+}
+```
+
+``` ruby
 def index
   filter = parse_filter_adapter(params)
+  # >> ["row.colum1 = ? AND (row.colum2 IS NULL OR row.colum2 IN (?))", [20], ["teste"]]
   @records = Model.where(filter)
   render json: @records
 end
